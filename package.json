@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "npx parcel index.html assets/*",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Chris Weed (chris@cjweed.com)",
   "license": "ISC",
   "devDependencies": {
     "http-server": "^0.12.3",
