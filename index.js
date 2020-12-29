@@ -3,8 +3,8 @@ import phillScene from './phill'
 
 const config = {
   type: Phaser.AUTO,
-  width: 128,
-  height: 128,
+  width: 16 * 8, // 16 tiles 8px each
+  height: 16 * 8,
   physics: {
     default: 'arcade',
     arcade: {
@@ -15,7 +15,7 @@ const config = {
   render: {
     pixelArt: true,
   },
-  zoom: 4,
+  zoom: 5,
   scene: phillScene,
 }
 

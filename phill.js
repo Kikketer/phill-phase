@@ -5,7 +5,6 @@ import Phaser from 'phaser'
  */
 class Phill extends Phaser.Scene {
   key = 'phill'
-  // static phill
 
   constructor() {
     super('Phill Scene')
@@ -20,6 +19,8 @@ class Phill extends Phaser.Scene {
         frameHeight: 16,
       },
     })
+
+    // TODO Use a level tiles image
   }
 
   create() {
@@ -41,44 +42,65 @@ class Phill extends Phaser.Scene {
       frames: this.anims.generateFrameNumbers('phill', { frames: [2, 1] }),
       frameRate: 4,
       repeat: -1,
-      flipX: true,
     })
+
+    // Create the keyboard input
+    this.cursors = this.input.keyboard.createCursorKeys()
+
+    // Level (todo use the tile editor)
+    const level = [
+      [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+      [33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33],
+    ]
+    const map = this.make.tilemap({
+      data: level,
+      tileWidth: 8,
+      tileHeight: 8,
+    })
+    const tiles = map.addTilesetImage('phill')
+    const layer = map.createLayer(0, tiles, 0, 0)
+    // map.setCollisionBetween(240, 256, true)
 
     // Show phill
     this.phill = this.physics.add.sprite(15, 15, 'phill', 1)
-    // phill.play('walk')
     this.phill.setBounce(0.2)
     // Setup collisions with ground and screen
     this.phill.setCollideWorldBounds(true)
-    // Create the keyboard input
-    this.cursors = this.input.keyboard.createCursorKeys()
   }
 
   update() {
     if (this.cursors.left.isDown) {
       this.phill.setVelocityX(-60)
-
-      this.phill.anims.play('left', true)
+      this.phill.anims.play('right', true)
+      this.phill.flipX = true
     } else if (this.cursors.right.isDown) {
       this.phill.setVelocityX(60)
-
       this.phill.anims.play('right', true)
+      this.phill.flipX = false
     } else {
       this.phill.setVelocityX(0)
-
       this.phill.anims.play('idle')
     }
 
-    if (this.cursors.up.isDown && this.phill.body.touching.down) {
-      this.phill.setVelocityY(-330)
+    //  && this.phill.body.touching.down
+    if (this.cursors.up.isDown) {
+      this.phill.setVelocityY(-100)
     }
   }
-  // Have to use the `function` bit because we rely on `this` being Phaser
-  // const create = function () {}
-  // const pre = function () {}
-
-  // const resultingConfig = { ...config }
-  // const game = new Phaser(config)
 }
 
 export default Phill
