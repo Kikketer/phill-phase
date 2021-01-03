@@ -2,18 +2,28 @@
   "name": "phill-phase",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "start": "npx parcel index.html assets/*",
+    "start": "npx parcel src/index.html -p 8000",
+    "build": "npx parcel build src/index.html --out-dir dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Chris Weed (chris@cjweed.com)",
   "license": "ISC",
   "devDependencies": {
     "http-server": "^0.12.3",
-    "parcel": "^1.12.4"
+    "parcel": "^1.12.4",
+    "parcel-plugin-clean-easy": "^1.0.2",
+    "parcel-plugin-static-files-copy": "^2.5.0"
   },
   "dependencies": {
     "phaser": "^3.50.1"
+  },
+  "parcelCleanPaths": [
+    "dist"
+  ],
+  "staticFiles": {
+    "staticPath": "public",
+    "watcherGlob": "**"
   }
 }

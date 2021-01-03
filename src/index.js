@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import phillScene from './phill'
+import phillScene from './scenes/PhillScene'
 
 const config = {
   type: Phaser.AUTO,
@@ -16,7 +16,7 @@ const config = {
     pixelArt: true,
   },
   zoom: 5,
-  scene: phillScene,
+  scene: [phillScene],
 }
 
 const game = new Phaser.Game(config)
