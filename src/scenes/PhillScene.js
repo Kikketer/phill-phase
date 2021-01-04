@@ -72,14 +72,14 @@ class PhillScene extends Phaser.Scene {
     // CSV uses the index in the createLayer param 1 (json you can give it a name)
     const groundLayer = map.createLayer(0, groundTiles, 0, 0)
     const bgLayer = bg.createLayer(0, groundTiles, 0, 0)
-    map.setCollisionByExclusion([-1], true, false, 0)
+    groundLayer.setCollisionByExclusion([-1], true)
 
     // Show phill
     this.phill = this.physics.add.sprite(15, 15, 'phill', 1)
     this.phill.setBounce(0.2)
     // Setup collisions with phill and screen
     this.phill.setCollideWorldBounds(true)
-    // this.physics.add.collider(this.phill, map)
+    this.physics.add.collider(this.phill, groundLayer)
   }
 
   update() {
