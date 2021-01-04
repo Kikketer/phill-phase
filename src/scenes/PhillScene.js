@@ -7,7 +7,7 @@ class PhillScene extends Phaser.Scene {
   key = 'phill'
 
   constructor() {
-    super('PhillScene Scene')
+    super('PhillScene')
   }
 
   preload() {
@@ -74,12 +74,30 @@ class PhillScene extends Phaser.Scene {
     const bgLayer = bg.createLayer(0, groundTiles, 0, 0)
     groundLayer.setCollisionByExclusion([-1], true)
 
+    this.physics.world.bounds.width = groundLayer.width
+    this.physics.world.bounds.height = groundLayer.height
+
     // Show phill
     this.phill = this.physics.add.sprite(15, 15, 'phill', 1)
-    this.phill.setBounce(0.2)
+    // this.phill.setBounce(0.2)
     // Setup collisions with phill and screen
     this.phill.setCollideWorldBounds(true)
-    this.physics.add.collider(this.phill, groundLayer)
+    this.physics.add.collider(groundLayer, this.phill)
+
+    // Setup the camera
+    this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
+    this.cameras.main.startFollow(this.phill)
+    // this.cameras.main.setBackgroundColor('#ccccff')
+
+    // Do some extra phill stuff (eventually make this it's own object)
+    this.phill.health = 3
+    // Hrm, tired of just making stuff up
+    this.healthText = this.add.text(2, 2, 'Health: ', {
+      fontFamily: 'PICO-8 mono',
+      fontSize: '5px',
+      fill: '#ffffff'
+    })
+    this.healthText.setScrollFactor(0)
   }
 
   update() {
@@ -97,7 +115,7 @@ class PhillScene extends Phaser.Scene {
     }
 
     //  && this.phill.body.touching.down
-    if (this.cursors.up.isDown) {
+    if (this.cursors.up.isDown && this.phill.body.onFloor()) {
       this.phill.setVelocityY(-100)
     }
   }
