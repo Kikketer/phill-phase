@@ -34,6 +34,10 @@ class PhillScene extends Phaser.Scene {
       key: 'level1-ground',
       url: './maps/level-1_Blocked.csv'
     })
+    this.load.tilemapCSV({
+      key: 'level1-bg',
+      url: './maps/level-1_Background.csv'
+    })
   }
 
   create() {
@@ -53,6 +57,12 @@ class PhillScene extends Phaser.Scene {
     // Create the keyboard input
     this.cursors = this.input.keyboard.createCursorKeys()
 
+    const bg = this.make.tilemap({
+      key: 'level1-bg',
+      tileWidth: 8,
+      tileHeight: 8
+    })
+
     const map = this.make.tilemap({
       key: 'level1-ground',
       tileWidth: 8,
@@ -61,6 +71,7 @@ class PhillScene extends Phaser.Scene {
     const groundTiles = map.addTilesetImage('tiles')
     // CSV uses the index in the createLayer param 1 (json you can give it a name)
     const groundLayer = map.createLayer(0, groundTiles, 0, 0)
+    const bgLayer = bg.createLayer(0, groundTiles, 0, 0)
     map.setCollisionByExclusion([-1], true, false, 0)
 
     // Show phill
