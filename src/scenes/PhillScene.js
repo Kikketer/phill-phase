@@ -11,6 +11,7 @@ class PhillScene extends Phaser.Scene {
   }
 
   preload() {
+    this.load.bitmapFont('nokia', './fonts/nokia16.png', './fonts/nokia16.xml')
     this.load.spritesheet({
       key: 'tiles',
       url: './images/Tiles.png',
@@ -92,15 +93,14 @@ class PhillScene extends Phaser.Scene {
     // Do some extra phill stuff (eventually make this it's own object)
     this.phill.health = 3
     // Hrm, tired of just making stuff up
-    this.healthText = this.add.text(2, 2, 'Health: ', {
-      fontFamily: 'PICO-8 mono',
-      fontSize: '5px',
-      fill: '#ffffff'
-    })
+    this.healthText = this.add.bitmapText(2, 2, 'nokia', 'Health:').setScale(1)
     this.healthText.setScrollFactor(0)
   }
 
   update() {
+    // this.phill.setFriction(0, 0)
+    // this.phill.setDragX(0)
+
     if (this.cursors.left.isDown) {
       this.phill.setVelocityX(-60)
       this.phill.anims.play('waddle', true)
