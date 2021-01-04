@@ -28,6 +28,12 @@ class PhillScene extends Phaser.Scene {
         frameHeight: 16,
       },
     })
+
+    // Tiled map
+    this.load.tilemapCSV({
+      key: 'level1-ground',
+      url: './maps/level-1_Blocked.csv'
+    })
   }
 
   create() {
@@ -47,33 +53,15 @@ class PhillScene extends Phaser.Scene {
     // Create the keyboard input
     this.cursors = this.input.keyboard.createCursorKeys()
 
-    // Level (todo use the tile editor)
-    const level = [
-      [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-      [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-      [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-      [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-      [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-      [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-      [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-      [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-      [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-      [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-      [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-      [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-      [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-      [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-      [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-      [0, 0, 0, 0, 0, 10, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    ]
     const map = this.make.tilemap({
-      data: level,
+      key: 'level1-ground',
       tileWidth: 8,
       tileHeight: 8,
     })
     const groundTiles = map.addTilesetImage('tiles')
-    const groundLayer = map.createLayer('Ground', groundTiles, 0, 0)
-    map.setCollisionByExclusion([-1])
+    // CSV uses the index in the createLayer param 1 (json you can give it a name)
+    const groundLayer = map.createLayer(0, groundTiles, 0, 0)
+    map.setCollisionByExclusion([-1], true, false, 0)
 
     // Show phill
     this.phill = this.physics.add.sprite(15, 15, 'phill', 1)
