@@ -36,14 +36,15 @@ class PhillScene extends Phaser.Scene {
     })
 
     // Tiled map
-    this.load.tilemapCSV({
-      key: 'level1-ground',
-      url: './maps/level-1_Blocked.csv'
-    })
-    this.load.tilemapCSV({
-      key: 'level1-bg',
-      url: './maps/level-1_Background.csv'
-    })
+    // this.load.tilemapCSV({
+    //   key: 'level1-ground',
+    //   url: './maps/level-1_Blocked.csv'
+    // })
+    // this.load.tilemapCSV({
+    //   key: 'level1-bg',
+    //   url: './maps/level-1_Background.csv'
+    // })
+    this.load.tilemapTiledJSON('level1', './maps/phill-level-1.json')
   }
 
   create() {
@@ -63,30 +64,40 @@ class PhillScene extends Phaser.Scene {
     // Create the keyboard input
     this.cursors = this.input.keyboard.createCursorKeys()
 
-    const bg = this.make.tilemap({
-      key: 'level1-bg',
-      tileWidth: 8,
-      tileHeight: 8
-    })
-
-    const map = this.make.tilemap({
-      key: 'level1-ground',
-      tileWidth: 8,
-      tileHeight: 8,
-    })
-    const groundTiles = map.addTilesetImage('tiles')
+    // const bg = this.make.tilemap({
+    //   key: 'level1-bg',
+    //   tileWidth: 8,
+    //   tileHeight: 8
+    // })
+    //
+    // const map = this.make.tilemap({
+    //   key: 'level1-ground',
+    //   tileWidth: 8,
+    //   tileHeight: 8,
+    // })
+    const map = this.make.tilemap({ key: 'level1' })
+    // Tie the Tiled name "Ground" to the 'tiles' image we are using
+    const groundTiles = map.addTilesetImage('Ground', 'tiles')
     // CSV uses the index in the createLayer param 1 (json you can give it a name)
-    const groundLayer = map.createLayer(0, groundTiles, 0, 0)
-    const bgLayer = bg.createLayer(0, groundTiles, 0, 0)
-    groundLayer.setCollisionByExclusion([-1], true)
+    // const groundLayer = map.createLayer(0, groundTiles, 0, 0)
+    // const bgLayer = bg.createLayer(0, groundTiles, 0, 0)
+    // groundLayer.setCollisionByExclusion([-1], true)
     // Physics for the ground?
     // const groundPhysics = this.physics.add.staticGroup(groundLayer)
+    // const groundLayer = map.getLayer('Ground')
+    const backgroundLayer = map.createLayer('BackgroundLayer', groundTiles, 0, 0)
+    const groundLayer = map.createLayer('GroundLayer', groundTiles, 0, 0)
+    groundLayer.setCollisionByProperty({ collides: true })
+    // map.setCollisionByExclusion([-1], true)
+    // groundLayer.setCollisionBetween(0, 50, true, false)
+
+    const groundPhysics = this.physics.add.staticGroup(groundLayer)
     const bear = this.physics.add.sprite(50, 80, 'bear')
     bear.setPushable(false)
     // bear.setDrag(180)
 
-    this.physics.world.bounds.width = groundLayer.width
-    this.physics.world.bounds.height = 128//groundLayer.height
+    this.physics.world.bounds.width = map.widthInPixels
+    this.physics.world.bounds.height = map.heightInPixels
 
     // Show phill
     this.phill = this.physics.add.sprite(15, 15, 'phill', 1)
@@ -95,8 +106,8 @@ class PhillScene extends Phaser.Scene {
     // Setup collisions with phill and screen
     this.phill.setCollideWorldBounds(true)
     this.physics.add.collider(groundLayer, this.phill)
-    this.physics.add.collider(bear, this.phill)
-    this.physics.add.collider(groundLayer, bear)
+    // this.physics.add.collider(bear, this.phill)
+    // this.physics.add.collider(groundLayer, bear)
 
     // Setup the camera
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
