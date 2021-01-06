@@ -30,6 +30,11 @@ class PhillScene extends Phaser.Scene {
       },
     })
 
+    this.load.image({
+      key: 'bear',
+      url: './images/Polar-Bear.png'
+    })
+
     // Tiled map
     this.load.tilemapCSV({
       key: 'level1-ground',
@@ -74,16 +79,24 @@ class PhillScene extends Phaser.Scene {
     const groundLayer = map.createLayer(0, groundTiles, 0, 0)
     const bgLayer = bg.createLayer(0, groundTiles, 0, 0)
     groundLayer.setCollisionByExclusion([-1], true)
+    // Physics for the ground?
+    // const groundPhysics = this.physics.add.staticGroup(groundLayer)
+    const bear = this.physics.add.sprite(50, 80, 'bear')
+    bear.setPushable(false)
+    // bear.setDrag(180)
 
     this.physics.world.bounds.width = groundLayer.width
-    this.physics.world.bounds.height = groundLayer.height
+    this.physics.world.bounds.height = 128//groundLayer.height
 
     // Show phill
     this.phill = this.physics.add.sprite(15, 15, 'phill', 1)
+    this.phill.setDrag(50)
     // this.phill.setBounce(0.2)
     // Setup collisions with phill and screen
     this.phill.setCollideWorldBounds(true)
     this.physics.add.collider(groundLayer, this.phill)
+    this.physics.add.collider(bear, this.phill)
+    this.physics.add.collider(groundLayer, bear)
 
     // Setup the camera
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
@@ -93,8 +106,8 @@ class PhillScene extends Phaser.Scene {
     // Do some extra phill stuff (eventually make this it's own object)
     this.phill.health = 3
     // Hrm, tired of just making stuff up
-    this.healthText = this.add.bitmapText(2, 2, 'nokia', 'Health:').setScale(1)
-    this.healthText.setScrollFactor(0)
+    // this.healthText = this.add.bitmapText(2, 2, 'nokia', 'Health:').setScale(1)
+    // this.healthText.setScrollFactor(0)
   }
 
   update() {
@@ -110,7 +123,7 @@ class PhillScene extends Phaser.Scene {
       this.phill.anims.play('waddle', true)
       this.phill.flipX = false
     } else {
-      this.phill.setVelocityX(0)
+      // this.phill.setVelocityX(0)
       this.phill.anims.play('idle')
     }
 
